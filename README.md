@@ -1,5 +1,5 @@
-[![Image](https://img.shields.io/badge/tutorials-%E2%9C%93-blue.svg)](https://github.com/astrobatty/piszkespipe/tree/master/examples)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/astrobatty/piszkespipe/blob/master/examples/run_piszkespipe.ipynb)
+[![Image](https://img.shields.io/badge/tutorials-%E2%9C%93-blue.svg)](https://github.com/astrobatty/piszkespipe/tree/main/examples)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/astrobatty/piszkespipe/blob/main/examples/run_piszkespipe.ipynb)
 <!--- [![Image](https://img.shields.io/badge/arXiv-1909.00446-blue.svg)](https://arxiv.org/abs/1909.00446) -->
 
 # piszkespipe - A pipeline for reducing echelle spectra obtained in Piszkesteto
