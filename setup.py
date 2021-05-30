@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+try:
+    import numpy
+except ModuleNotFoundError:
+    raise ModuleNotFoundError('Please install numpy -> pip install numpy')
+
 from setuptools import setup
 from os import path
 import sys
@@ -8,8 +13,6 @@ import sys
 #from Cython.Distutils import build_ext
 from numpy.distutils.core import Extension as Extension
 from numpy.distutils.core import setup as setup
-
-import numpy
 
 sys.path.insert(0, "piszkespipe")
 from version import __version__
