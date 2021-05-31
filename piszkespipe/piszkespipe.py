@@ -798,7 +798,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
 
         know_moon = False
         if obj.split('/')[-1] in spec_moon:
-            I = np.where(obj.split('/')[-1] == spec_moon)[0]
+            I = np.where(np.isin(spec_moon , obj.split('/')[-1]))[0][0] 
             know_moon = True
             here_moon = use_moon[I]
 
