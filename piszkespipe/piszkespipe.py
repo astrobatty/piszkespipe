@@ -1596,7 +1596,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
             piszkesutils.save_CCF(xc_dict,ccf_fits,obname,mjd,mbjd,bjd_out,bcvel_baryc,hd,ra,dec,refvel,moon_state,lunation,moonsep,mephem,
                                   sp_type,RV,RVerr2,BS,BSerr,disp_epoch,SNR_5130,SNR_5130_R,XC_min)
 
-            line_out = "%s,%s,%.8f,%.4f,%.4f,%.3f,%.3f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,rcc1m,ceres,20000,%d,%d,%.2f,%.2f,%.2f,%.2f,%.1f,%.2f,%.2f,%.1f,%d,%s\n"%\
+            line_out = "%s,%s,%.8f,%.4f,%.4f,%.3f,%.3f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,%.4f,rcc1m,piszkespipe,20000,%d,%d,%.2f,%.2f,%.2f,%.2f,%.1f,%.2f,%.2f,%.1f,%d,%s\n"%\
                       (obname, nama, bjd_out, RV, RVerr2, BS, BSerr, bcvel_baryc, RV+bcvel_baryc, RVerr2, RVsyserror,\
                       RVtwoG1, RVtwoG1+bcvel_baryc, RVtwoG1err2, RVtwoG2, RVtwoG2+bcvel_baryc, RVtwoG2err2,\
                       T_eff_epoch, T_eff_err, logg_epoch, logg_err, Z_epoch, Z_err, vsini_epoch, XC_min, disp_epoch,exptime, SNR_5130_R, ccf_pdf)
