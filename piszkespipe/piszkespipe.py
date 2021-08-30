@@ -68,7 +68,7 @@ dark_corr = True
 back_corr = True
 
 def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
-                reffile,onlysimpleextract,remove_cosmic):
+                reffile,onlysimpleextract,remove_cosmic,keepoutliers):
 
     ########## I/O Path settings ##########
     dirin = os.path.join(dirin,'')
@@ -798,7 +798,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
 
         know_moon = False
         if obj.split('/')[-1] in spec_moon:
-            I = np.where(np.isin(spec_moon , obj.split('/')[-1]))[0][0] 
+            I = np.where(np.isin(spec_moon , obj.split('/')[-1]))[0][0]
             know_moon = True
             here_moon = use_moon[I]
 
@@ -1161,8 +1161,9 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
                     final[5,orre,nJ] = 1.0
                     final[5,orre,nJ2] = 1.0
                     #plot(final[8,orre])
-                    rI = np.where(final[5,orre] > 1. + 8./final[8,orre])
-                    final[5,orre,rI] = 1.
+                    if not keepoutliers:
+                        rI = np.where(final[5,orre] > 1. + 8./final[8,orre])
+                        final[5,orre,rI] = 1.
                     spl           = scipy.interpolate.splrep(np.arange(WavSol.shape[0]), final[0,orre,:],k=3)
                     dlambda_dx    = scipy.interpolate.splev(np.arange(WavSol.shape[0]), spl, der=1)
                     NN            = np.average(dlambda_dx)
@@ -1221,16 +1222,19 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
                     final[7,orre] = ratio
                     final[8,orre] = ratio / np.sqrt( ratio / GAIN + (RON/GAIN)**2 )
                     medflx = np.zeros(len(final[3,orre,:]))
-                    nI = np.where(np.isnan(final[3,orre])==False)[0]
-                    nJ = np.where(np.isnan(final[3,orre]))[0]
+                    nI = np.where(np.isfinite(final[3,orre]))[0]
                     medflx = scipy.signal.medfilt(final[3,orre,:][nI],3)
                     res = final[3,orre,:][nI] - medflx
                     dev = np.sqrt(np.var(res))
-                    I = np.where(final[3,orre,:] > 1. + 5*dev)[0]
-                    final[3,orre][I]=1.
+                    nI = np.where(np.isinf(final[3,orre]))[0]
+                    nJ = np.where(np.isnan(final[3,orre]))[0]
+                    final[3,orre][nI]=1.
                     final[3,orre][nJ]=1.
-                    rI = np.where(final[5,orre] > 1. + 8./final[8,orre])
-                    final[5,orre,rI] = 1.
+                    if not keepoutliers:
+                        rI = np.where(final[3,orre,:] > 1. + 5*dev)[0]
+                        final[3,orre,rI] = 1.
+                        rI = np.where(final[5,orre] > 1. + 8./final[8,orre])
+                        final[5,orre,rI] = 1.
                     spl           = scipy.interpolate.splrep(np.arange(WavSol.shape[0]), final[0,orre,:],k=3)
                     dlambda_dx    = scipy.interpolate.splev(np.arange(WavSol.shape[0]), spl, der=1)
                     NN            = np.average(dlambda_dx)
@@ -1659,6 +1663,8 @@ def piszkespipe_from_commandline(args=None):
                         help="If enabled, Marsch optimized raw extraction algorithm will be saved.")
     parser.add_argument('-nocosmic', action="store_true", default=False,
                         help="If activated, no cosmic ray identification will be performed.")
+    parser.add_argument('-keepoutliers', action="store_true", default=False,
+                        help="If activated, strong upper (emission line-like) outliers won't be removed.")
     parser.add_argument('-avoid_plot', action="store_true", default=False,
                         help="If activated, the code will not generate a pdf file "
                             "with the plot of the computed CCF.")
@@ -1674,6 +1680,7 @@ def piszkespipe_from_commandline(args=None):
     npools            = int(args.npools)
     object2do         = args.o2do
     reffile           = args.reffile
+    keepoutliers      = args.keepoutliers
     if args.marsch:
         onlysimpleextract = False
     else:
@@ -1694,4 +1701,5 @@ def piszkespipe_from_commandline(args=None):
                     object2do=object2do,
                     reffile=reffile,
                     onlysimpleextract=onlysimpleextract,
-                    remove_cosmic=remove_cosmic)
+                    remove_cosmic=remove_cosmic,
+                    keepoutliers=keepoutliers)

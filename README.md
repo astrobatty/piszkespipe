@@ -79,7 +79,7 @@ $ piszkespipe --help
 
 usage: piszkespipe [-h] [-dirout DIROUT] [-do_class] [-just_extract]
                    [-o2do O2DO] [-reffile REFFILE] [-npools NPOOLS] [-marsch]
-                   [-nocosmic] [-avoid_plot]
+                   [-nocosmic] [-keepoutliers] [-avoid_plot]
                    directorio
 
 piszkespipe reduces echelle spectrum obtained in Piszkesteto.
@@ -97,6 +97,7 @@ optional arguments:
   -npools NPOOLS    Number of CPU cores to be used by the code. Default is all.
   -marsch           If enabled, Marsch optimized raw extraction algorithm will be saved.
   -nocosmic         If activated, no cosmic ray identification will be performed.
+  -keepoutliers     If activated, strong upper (emission line like) outliers won't be removed.
   -avoid_plot       If activated, the code will not generate a pdf file with the plot of the computed CCF.
 ```
 
@@ -117,6 +118,7 @@ Some comments on the non self-evident options.
 - `marsch` optimized extraction, which details can be found in [Marsh,1989,PASP,101,1032](https://ui.adsabs.harvard.edu/abs/1989PASP..101.1032M/abstract), sometimes yields ambiguous results, thus the result of the simple extraction will be saved by default.
 - `nocosmic`, Cosmic ray identification is done using the algorithm of [L.A.Cosmic](http://www.astro.yale.edu/dokkum/lacosmic/), but if you feel like e.g. some sharp emisson lines are removed, this option will deactivate the identification.
 - `reffile` is an auxiliary file corresponds to a plain text file that can be used to give data for particular targets in order to improve the precision in the radial velocity estimation. The file should contain 8 comma-separated colummns containing the following information:
+- `keepoutliers`, If a target has very strong emission lines, then those might be excluded. To avoid this effect, use this flag.
 
 ```
 1-  filename of the target.
