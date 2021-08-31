@@ -616,8 +616,18 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
     ######### Fit polynomial to time vs ThAr velocity shift #########
     Is = np.argsort(thtimes)
     thtimes,thshifts = thtimes[Is],thshifts[Is]
-    if len(thtimes) > 3:
+    # If we have >3 ThAr and there time distribution is approx. uniform(ish)
+    if len(thtimes) > 3 and not np.any( np.abs(np.diff(thtimes) / np.median(np.diff(thtimes))) > 100 ):
         thtck = scipy.interpolate.splrep(thtimes,thshifts,k=3,s=0)
+        ejeje = np.linspace(thtimes[0],thtimes[-1],10000)
+        ejeyy = scipy.interpolate.splev(ejeje,thtck,der=0)
+        if debugglobalvelshift:
+            plt.plot(thtimes,thshifts,'ro')
+            plt.plot(ejeje,ejeyy)
+            plt.show()
+    elif len(thtimes) > 3:
+        # If ThAr time distribution is not uniform(ish) use 1st order Bspline
+        thtck = scipy.interpolate.splrep(thtimes,thshifts,k=1,s=0)
         ejeje = np.linspace(thtimes[0],thtimes[-1],10000)
         ejeyy = scipy.interpolate.splev(ejeje,thtck,der=0)
         if debugglobalvelshift:
