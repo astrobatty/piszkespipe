@@ -64,6 +64,8 @@ debugsciencecorrection = False
 debugbkgestimation = False
 debugscienceorders = False
 debugsciencespectrumfit = False
+debugfitblaze = False
+debugfitblazeiter = False
 
 ####### GLOBAL VARIABLES #####
 force_pre_process = False
