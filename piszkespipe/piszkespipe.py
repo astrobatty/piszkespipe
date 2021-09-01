@@ -39,6 +39,17 @@ PACKAGEDIR = os.path.abspath(os.path.dirname(__file__))
 
 np.seterr(all='ignore')
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 ####### Debug options #####
 debug = False
 debugfindorders = False
@@ -179,12 +190,14 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
 
 
     ################ Collecting initial informations on calibration data ##############################
-    if len(flats) > 2:
+    if len(flats) > 0:
         have_flat = True
         #JustExtract = False
     else:
-        print('Warning: No sufficient fiber flats found ...')
-        log.warning('Warning: No sufficient fiber flats found')
+        print(bcolors.FAIL + 'Warning: No FLAT frames found!' + bcolors.ENDC)
+        print(bcolors.FAIL + 'Simple blaze correction will be performed!' + bcolors.ENDC)
+        print(bcolors.FAIL + 'This will affect strong/wide emission lines!' + bcolors.ENDC)
+        log.warning('Warning: No FLAT frames found!')
         have_flat = False
         #JustExtract = True
 
@@ -277,8 +290,8 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
 
             print("\t\t-> Masterflats: done!")
         else:
-            print('Warning! No FLAT frames.')
-            print('Using median of science images to trace orders!')
+            print(bcolors.WARNING + 'Warning! No FLAT frames.' + bcolors.ENDC)
+            print(bcolors.WARNING + 'Using median of science images to trace orders!' + bcolors.ENDC)
             log.warning('No FLAT frames. Using median of science images to trace orders!')
             Flat, roF, gaF =piszkesutils.MedianCombine(objects, True, os.path.join(dirout,'MasterBias.fits'),RON,GAIN, dark_bo=have_darks, dlist=MasDarl)
             #if Flat.ravel().min() < 0:
@@ -645,8 +658,8 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
     c_all = c_all[::-1]
     print('\n\tExtraction of Flat calibration frames:')
     if not have_flat:
-        print('Warning! No FLAT frames.')
-        print('Using median of science frames instead.')
+        print(bcolors.WARNING + 'Warning! No FLAT frames.' + bcolors.ENDC)
+        print(bcolors.WARNING + 'Using median of science frames instead.' + bcolors.ENDC)
         log.warning('No FLAT frames. Using median of science frames instead.')
     # names of extracted Masterflat (optimal & simple) & of the P flat matrix
     S_flat_fits = os.path.join(dirout,'Masterflat.spec.fits')
@@ -1038,13 +1051,15 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
 
         # Collect best ThAr spectra
         if mjd < thtimes[0]:
-            print("Problem with ThAr and science times")
+            print(bcolors.WARNING + "Problem with ThAr and science times:" + bcolors.ENDC)
+            print(bcolors.WARNING + "\tNo ThAr taken before science frames" + bcolors.ENDC)
             log.warning("Problem with ThAr and science times: <mjd")
             index1 = 0
             index2 = 0
             indexx = 0
         elif mjd > thtimes[-1]:
-            print("Problem with ThAr and science times")
+            print(bcolors.WARNING + "Problem with ThAr and science times:" + bcolors.ENDC)
+            print(bcolors.WARNING + "\tNo ThAr taken after science frames" + bcolors.ENDC)
             log.warning("Problem with ThAr and science times: >mjd")
             index1 = -1
             index2 = -1
