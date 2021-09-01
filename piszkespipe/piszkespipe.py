@@ -1172,7 +1172,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
             if len(np.where(np.isnan(obj_S[orre,2,:][::-1]))[0]) < 100:
                 final[1,orre,:] = obj_S[orre,1,:][::-1]   # ...flux in ADU (optimal extraction)...
                 final[2,orre,:] = obj_S[orre,2,:][::-1]   # ...and 1/variance...
-                if JustExtract==False and have_flat:
+                if have_flat:
                     final[3,orre,:] = final[1,orre,:] / sm_flat[orre,:][::-1]   # ...flux (optimal)/flat...
                     final[4,orre,:] = final[2,orre,:] * (sm_flat[orre,:][::-1] ** 2)   # ...and 1/variance * flat**2...
                     cont = GLOBALutils.get_cont_single(final[0,orre,:],final[3,orre,:],final[4,orre,:], nc = 5,lu=3,span=10)
@@ -1237,6 +1237,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
                         plt.ylabel('S/N')
                         plt.show()
                 else:
+                    # If there is NO flat
                     rw,rf = final[0,orre],final[1,orre]
                     cbl = piszkesutils.fit_blaze(rw,rf)
                     ratio = np.polyval(cbl,rw)
