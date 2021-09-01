@@ -23,6 +23,7 @@ from math import radians as rad
 from astropy.io import fits as pyfits
 import pickle
 import os
+import sys
 import scipy
 import ccdproc
 import logging
@@ -190,20 +191,38 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
 
 
     ################ Collecting initial informations on calibration data ##############################
+    if len(biases) == 0:
+        print(bcolors.FAIL + 'Error: No Bias frame found!' + bcolors.ENDC)
+        log.warning('Error: No Bias frame found!')
+        sys.exit()
+
+    if len(ThAr_ref) == 0:
+        print(bcolors.FAIL + 'Error: No ThAr frame found!' + bcolors.ENDC)
+        log.warning('Error: No ThAR frame found!')
+        sys.exit()
+
+    if len(objects) == 0:
+        print(bcolors.FAIL + 'Error: No OBJECT frame found!' + bcolors.ENDC)
+        log.warning('Error: No OBJECT frame found!')
+        sys.exit()
+
     if len(flats) > 0:
         have_flat = True
         #JustExtract = False
     else:
-        print(bcolors.FAIL + 'Warning: No FLAT frames found!' + bcolors.ENDC)
+        print(bcolors.FAIL + 'Warning: No FLAT frame found!' + bcolors.ENDC)
         print(bcolors.FAIL + 'Simple blaze correction will be performed!' + bcolors.ENDC)
         print(bcolors.FAIL + 'This will affect strong/wide emission lines!' + bcolors.ENDC)
-        log.warning('Warning: No FLAT frames found!')
+        log.warning('Warning: No FLAT frame found!')
         have_flat = False
         #JustExtract = True
 
-    have_darks = False
     if len(darks)>0:
         have_darks = True
+    else:
+        print(bcolors.WARNING + 'Warning: No DARK frame found!' + bcolors.ENDC)
+        log.warning('Warning: No DARK frame found!')
+        have_darks = False
 
     if len(fib_flats) > 0:
         have_fib_flats = True
@@ -1200,7 +1219,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
                         checkthisorder = orre
 
                         rw,rf = final[0,orre],obj_Ss[orre,:][::-1]
-                        cbl = fit_blaze(rw,rf,min_extract_col,debug=debugfitblaze,debugiter=debugfitblazeiter)
+                        cbl = piszkesutils.fit_blaze(rw,rf,min_extract_col,debug=debugfitblaze,debugiter=debugfitblazeiter)
                         ratio = np.polyval(cbl,rw)
                         finalsimple = rf/ratio
 
@@ -1239,7 +1258,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
                 else:
                     # If there is NO flat
                     rw,rf = final[0,orre],final[1,orre]
-                    cbl = fit_blaze(rw,rf,min_extract_col,debug=debugfitblaze,debugiter=debugfitblazeiter)
+                    cbl = piszkesutils.fit_blaze(rw,rf,min_extract_col,debug=debugfitblaze,debugiter=debugfitblazeiter)
                     ratio = np.polyval(cbl,rw)
                     final[3,orre] = rf/ratio
                     final[5,orre] = rf/ratio
