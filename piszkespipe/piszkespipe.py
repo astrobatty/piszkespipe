@@ -1200,7 +1200,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
                         checkthisorder = orre
 
                         rw,rf = final[0,orre],obj_Ss[orre,:][::-1]
-                        cbl = piszkesutils.fit_blaze(rw,rf)
+                        cbl = fit_blaze(rw,rf,min_extract_col,debug=debugfitblaze,debugiter=debugfitblazeiter)
                         ratio = np.polyval(cbl,rw)
                         finalsimple = rf/ratio
 
@@ -1239,7 +1239,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
                 else:
                     # If there is NO flat
                     rw,rf = final[0,orre],final[1,orre]
-                    cbl = piszkesutils.fit_blaze(rw,rf)
+                    cbl = fit_blaze(rw,rf,min_extract_col,debug=debugfitblaze,debugiter=debugfitblazeiter)
                     ratio = np.polyval(cbl,rw)
                     final[3,orre] = rf/ratio
                     final[5,orre] = rf/ratio

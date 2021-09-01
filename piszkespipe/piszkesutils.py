@@ -313,9 +313,45 @@ def htosec(h,m,s):
        "transform from hour,minute and seconds, to seconds"
        return s+60.0*(m+60.0*h)
 
-def fit_blaze(w,f,n=5):
+def fit_blaze(w,f,min_extract_col,n=5,debug=False,debugiter=False):
+    w = w[min_extract_col:-min_extract_col]
+    f = f[min_extract_col:-min_extract_col]
+    worig = w.copy()
+    forig = f.copy()
     li = len(w)
+
+    # Pre-cleaning of emission lines
+    co = np.polyfit(w,f,2)
+    res = f - np.polyval(co,w)
+    dev = np.sqrt(np.var(res))
+    I = np.where(res < 2.5*dev)[0]
+    cond = True
+    if len(I) < .3*li:
+        cond = False
+    while cond:
+        w,f = w[I],f[I]
+        ntps = len(f)
+        co = np.polyfit(w,f,2)
+        if debugiter:
+            plt.title('Elliminating emission lines')
+            plt.plot(worig,forig,'k')
+            plt.plot(w,f,'r')
+            plt.plot(worig,np.polyval(co,worig),'g')
+            plt.show()
+        res = f - np.polyval(co,w)
+        dev = np.sqrt(np.var(res))
+        I = np.where(res < 2.5*dev)[0]
+        if ntps==len(I) or len(I) < .3*li:
+            cond = False
+
+    # Iterative fitting
     co = np.polyfit(w,f,n)
+    if debug:
+        plt.title('Fitting blaze initial')
+        plt.plot(worig,forig)
+        plt.plot(w,f)
+        plt.plot(worig,np.polyval(co,worig),'r')
+        plt.show()
     res = f - np.polyval(co,w)
     dev = np.sqrt(np.var(res))
     J1 = np.where(res < -1.5*dev)[0]
@@ -329,6 +365,11 @@ def fit_blaze(w,f,n=5):
     while cond:
         w,f = w[I],f[I]
         co = np.polyfit(w,f,n)
+        if debugiter:
+            plt.plot(worig,forig)
+            plt.plot(w,f)
+            plt.plot(worig,np.polyval(co,worig),'r')
+            plt.show()
         res = f - np.polyval(co,w)
         dev = np.sqrt(np.var(res))
         J1 = np.where(res < -1.5*dev)[0]
@@ -339,6 +380,45 @@ def fit_blaze(w,f,n=5):
         cond = True
         if len(J)==0 or len(I) < .3*li:
             cond = False
+
+    if debug:
+        plt.title('Fitting blaze final')
+        plt.plot(worig,forig)
+        plt.plot(w,f)
+        plt.plot(worig,np.polyval(co,worig),'r')
+        plt.show()
+
+    # Fill edges if missing
+    # IMPORT: wavelengths are in reversed order!
+    refit = False
+    missing_wav = 10 # AA
+    if w.max() < worig.max()-missing_wav:
+        if debug: print('Filling end')
+        # If last 20 AA has been removed extrapolate it back
+        fillfrom = np.argmin(np.abs(worig - (worig.max()-missing_wav) )) + 1
+        filledflux = np.poly1d(np.polyfit(w,f,2))(worig[:fillfrom])
+        w = np.append(worig[:fillfrom], w)
+        f = np.append(filledflux , f)
+        refit = True
+
+    if w.min() > worig.min()+missing_wav:
+        if debug: print('Filling beginning')
+        # If first 20 AA has been removed extrapolate it back
+        fillto = np.argmin(np.abs(worig - (worig.min()+missing_wav) ))
+        filledflux = np.poly1d(np.polyfit(w,f,2))(worig[fillto:])
+        w = np.append(w , worig[fillto:])
+        f = np.append(f , filledflux)
+        refit = True
+
+    if refit:
+        co = np.polyfit(w,f,n)
+        if debug:
+            plt.title('After edge filling')
+            plt.plot(worig,forig,'k')
+            plt.plot(w,f,'C1')
+            plt.plot(worig,np.polyval(co,worig),'r')
+            plt.show()
+
     return co
 
 def mjd_fromheader(h):
