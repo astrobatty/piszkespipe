@@ -3740,10 +3740,11 @@ def get_disp(obname,reffile='reffile.txt'):
                 disp = float(cos[7])
                 found = True
                 break
-        if not found:
-            print( '\t\tWarning! There is no predefined dispersion of the CCF.')
+        #if not found:
+        #    print( '\t\tWarning! There is no predefined dispersion of the CCF.')
     except:
-        print( '\t\tWarning! There is no predefined dispersion of the CCF.')
+        #print( '\t\tWarning! There is no predefined dispersion of the CCF.')
+        pass
 
     return disp
 

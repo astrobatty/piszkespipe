@@ -133,7 +133,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
 
     ###### Path to the synthetic models ######
     if DoClass and os.getenv('COELHO') is None:
-        print('COELHO model dir is not found, but -do_class is specified!')
+        print(bcolors.FAIL + 'COELHO model dir is not found, but -do_class is specified!' + bcolors.ENDC)
         print('Please download the models (2.7 GB), e.g. by')
         print('\tmkdir ~/COELHO_MODELS')
         print('\tcd ~/COELHO_MODELS')
@@ -149,9 +149,8 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
         # test whether the fits are there
         testfile = os.path.join(models_path,'vsini_0.0','R_0.0_5000_30_p00p00.ms.fits')
         if os.access(testfile,os.F_OK) == False:
-            print(testfile)
-            print('COELHO model dir exists, but fits files are missing!')
-            print('Did you extracted the model file?')
+            print(bcolors.FAIL + 'COELHO model dir exists, but fits files are missing!' + bcolors.ENDC)
+            print('Have you extracted the tar file?')
             exit()
 
     order_dir = os.path.join(PACKAGEDIR,"wavcals",'')
@@ -1388,6 +1387,9 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
                     known_sigma = True
                 else:
                     disp = 30.
+
+                    print(bcolors.WARNING + '\t\tWarning! There is no predefined dispersion of the CCF.' + bcolors.ENDC)
+                    print(bcolors.WARNING + '\t\tFor more reliable RVs provide a reffile or use option -do_class.' + bcolors.ENDC)
             else:
                 known_sigma = True
 
