@@ -215,12 +215,14 @@ _Note:_ the systematic error in RV can be elliminated by measuring the RV of a s
 
 ## Spectral Classification Module
 
-In order to use the automated spectral classification routines (`-do_class` option), a set of synthetic spectra is required. In particular, the original CERES uses a modified version of the [Coelho et al 2005 models](https://ui.adsabs.harvard.edu/abs/2005A&A...443..735C/abstract), where the models have been reduced in wavelength coverage, degraded in resolution and v*sin(i), and reduced in sampling. This grid of models can be downloaded from [this link](http://www.astro.puc.cl/~rbrahm/coelho_05_red4_R40.tar.gz) (2.7 GB) and the $COELHO path to models must be defined:
+In order to use the automated spectral classification routines (`-do_class` option), a set of synthetic spectra is required. In particular, the original CERES uses a modified version of the [Coelho et al 2005 models](https://ui.adsabs.harvard.edu/abs/2005A&A...443..735C/abstract), where the models have been reduced in wavelength coverage, degraded in resolution and v*sin(i), and reduced in sampling. This grid of models can be downloaded from [this link](https://www.dropbox.com/s/0ktrptz4bc5bk66/coelho_05_red4_R40.tar.gz) (2.85 GB; or [from the original source](http://www.astro.puc.cl/~rbrahm/coelho_05_red4_R40.tar.gz)) and the $COELHO path to models must be defined:
 
 ```bash
 mkdir ~/COELHO_MODELS
 cd ~/COELHO_MODELS
-wget http://www.astro.puc.cl/~rbrahm/coelho_05_red4_R40.tar.gz
+wget https://www.dropbox.com/s/0ktrptz4bc5bk66/coelho_05_red4_R40.tar.gz
+# Or from the orignal source:
+# wget http://www.astro.puc.cl/~rbrahm/coelho_05_red4_R40.tar.gz
 tar -xf coelho_05_red4_R40.tar.gz
 ```
 
