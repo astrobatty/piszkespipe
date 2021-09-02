@@ -133,10 +133,10 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
     ###### Path to the synthetic models ######
     if DoClass and os.getenv('COELHO') is None:
         print(bcolors.FAIL + 'COELHO model dir is not found, but -do_class is specified!' + bcolors.ENDC)
-        print('Please download the models (2.7 GB), e.g. by')
+        print('Please download the models (2.85 GB), e.g. by')
         print('\tmkdir ~/COELHO_MODELS')
         print('\tcd ~/COELHO_MODELS')
-        print('\twget http://www.astro.puc.cl/~rbrahm/coelho_05_red4_R40.tar.gz')
+        print('\twget https://www.dropbox.com/s/0ktrptz4bc5bk66/coelho_05_red4_R40.tar.gz')
         print('\ttar -xf coelho_05_red4_R40.tar.gz')
         print('And add the location of R_40000b dir to $COELHO path, e.g. by')
         print("\texport COELHO=~/COELHO_MODELS")
