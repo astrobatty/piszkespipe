@@ -23,7 +23,6 @@ from math import radians as rad
 from astropy.io import fits as pyfits
 import pickle
 import os
-import sys
 import scipy
 import ccdproc
 import logging
@@ -195,17 +194,17 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
     if len(biases) == 0:
         print(bcolors.FAIL + 'Error: No Bias frame found!' + bcolors.ENDC)
         log.warning('Error: No Bias frame found!')
-        sys.exit()
+        exit()
 
     if len(ThAr_ref) == 0:
         print(bcolors.FAIL + 'Error: No ThAr frame found!' + bcolors.ENDC)
         log.warning('Error: No ThAR frame found!')
-        sys.exit()
+        exit()
 
     if len(objects) == 0:
         print(bcolors.FAIL + 'Error: No OBJECT frame found!' + bcolors.ENDC)
         log.warning('Error: No OBJECT frame found!')
-        sys.exit()
+        exit()
 
     if len(flats) > 0:
         have_flat = True
