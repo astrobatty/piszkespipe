@@ -31,6 +31,17 @@ global GDATA,P
 import statsmodels.api as sm
 lowess = sm.nonparametric.lowess
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 # Some functions to be used by the pipeline
 class Constants:
         "Here I declare the constants I will use in the different functions"
@@ -3741,9 +3752,13 @@ def get_disp(obname,reffile='reffile.txt'):
                 found = True
                 break
         if not found:
-            print( '\t\tWarning! There is no predefined dispersion of the CCF.')
+            print(bcolors.WARNING + '\t\tWarning! There is no predefined dispersion of the CCF.' + bcolors.ENDC)
+            print(bcolors.WARNING + '\t\tFor more reliable radial velocities' + bcolors.ENDC)
+            print(bcolors.WARNING + '\t\tprovide a reffile or use option -do_class.' + bcolors.ENDC)
     except:
-        print( '\t\tWarning! There is no predefined dispersion of the CCF.')
+        print(bcolors.WARNING + '\t\tWarning! There is no predefined dispersion of the CCF.' + bcolors.ENDC)
+        print(bcolors.WARNING + '\t\tFor more reliable radial velocities' + bcolors.ENDC)
+        print(bcolors.WARNING + '\t\tprovide a reffile or use option -do_class.' + bcolors.ENDC)
 
     return disp
 
