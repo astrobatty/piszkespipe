@@ -21,17 +21,6 @@ np.seterr(all='ignore')
 import warnings
 warnings.filterwarnings("ignore",category=RuntimeWarning)
 
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKCYAN = '\033[96m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
 def is_there(string, word):
     l=len(word)
     i=0
@@ -658,7 +647,7 @@ def get_mask_reffile(obname,reffile='reffile.txt',base='../../xc_masks/',sp_type
     except:
         pass
     if not found:
-        print(bcolors.WARNING + '\t\tWarning!'+ bcolors.ENDC + ' Target not found in reference mask file.')
+        print( '\t\tWarning! Target not found in reference mask file.')
 
     if sp_type == 'G2':
         xc_mask = xc_masks[0]
