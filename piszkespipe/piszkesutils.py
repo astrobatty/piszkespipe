@@ -43,7 +43,7 @@ def search_name(file,log):
     try:
         result_table = Simbad.query_region(SkyCoord(ra,dec,unit=(u.hourangle, u.deg), frame='icrs'), radius=40*u.arcsec)
         name = result_table['MAIN_ID'][0].strip('* ').strip('V*').replace(' ','')
-    except (TypeError,TableParseError):
+    except (TypeError,TableParseError,IndexError):
         name = Path(file).stem
         log.warning('%s %s not found in Simbad! Using %s instead.' % (ra,dec,name))
 
@@ -576,7 +576,7 @@ def simbad_query_sptype(file,log):
     try:
         try:
             result_table = Simbad.query_region(SkyCoord(ra,dec,unit=(u.hourangle, u.deg), frame='icrs'), radius=40*u.arcsec)
-        except TableParseError:
+        except (TableParseError,IndexError):
             result_table = None
 
         query_success = False

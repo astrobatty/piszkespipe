@@ -366,8 +366,12 @@ def CCF(spec, model_path='/dummy/path/',doplot = False, plot_dir = '/home/rabrah
     med = float(vv[numpy.argmax(ccf)])
     sig = 20.0
     guess1 = np.array([B,A,med,sig])
-    ajustep=scipy.optimize.leastsq(res_gauss1,guess1,args=(ccf,vv))
-    velo = ajustep[0][2]
+    bounds = ((None,None,np.min(vv),0),(None,None,np.max(vv),None))
+    try:
+        ajustep=scipy.optimize.least_squares(res_gauss1,guess1,args=(ccf,vv),bounds=bounds)
+        velo = ajustep[0][2]
+    except ValueError:
+        velo = med
 
     if debug:
         print('The initial radial velocity is:', str(velo), 'km/s')
