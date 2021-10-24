@@ -32,14 +32,19 @@ def is_there(string, word):
     return ist
 
 def search_name(file):
+    from astroquery.simbad import Simbad
+    from astroquery.exceptions import TableParseError
+    from pathlib import Path
+
     h = pyfits.open(file)[get_extension(file)].header
     ra  = h['RA']
     dec = h['DEC']
 
-    from astroquery.simbad import Simbad
-
-    result_table = Simbad.query_region(SkyCoord(ra,dec,unit=(u.hourangle, u.deg), frame='icrs'), radius=30*u.arcsec)
-    name = result_table['MAIN_ID'][0].strip('* ').strip('V*').replace(' ','')
+    try:
+        result_table = Simbad.query_region(SkyCoord(ra,dec,unit=(u.hourangle, u.deg), frame='icrs'), radius=40*u.arcsec)
+        name = result_table['MAIN_ID'][0].strip('* ').strip('V*').replace(' ','')
+    except (TypeError,TableParseError):
+        name = Path(file).stem
 
     return name
 
