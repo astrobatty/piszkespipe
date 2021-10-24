@@ -565,15 +565,19 @@ def FlatPolynomial_single(flat,nc=7,debug=False):
     return flatcorr
 
 def simbad_query_sptype(file,log):
+    from astroquery.simbad import Simbad
+    Simbad.add_votable_fields('sptype')
+    from astroquery.exceptions import TableParseError
+
     h = pyfits.open(file)[get_extension(file)].header
     ra  = h['RA']
     dec = h['DEC']
 
-    from astroquery.simbad import Simbad
-    Simbad.add_votable_fields('sptype')
-
     try:
-        result_table = Simbad.query_region(SkyCoord(ra,dec,unit=(u.hourangle, u.deg), frame='icrs'), radius=30*u.arcsec)
+        try:
+            result_table = Simbad.query_region(SkyCoord(ra,dec,unit=(u.hourangle, u.deg), frame='icrs'), radius=40*u.arcsec)
+        except TableParseError:
+            result_table = None
 
         query_success = False
         if result_table is None or len(result_table['SP_TYPE'][0]) == 0:
