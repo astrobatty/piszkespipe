@@ -31,7 +31,7 @@ def is_there(string, word):
         i+=1
     return ist
 
-def search_name(file):
+def search_name(file,log):
     from astroquery.simbad import Simbad
     from astroquery.exceptions import TableParseError
     from pathlib import Path
@@ -45,6 +45,7 @@ def search_name(file):
         name = result_table['MAIN_ID'][0].strip('* ').strip('V*').replace(' ','')
     except (TypeError,TableParseError):
         name = Path(file).stem
+        log.warning('%s %s not found in Simbad! Using %s instead.' % (ra,dec,name))
 
     return name
 
