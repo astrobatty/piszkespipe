@@ -943,7 +943,8 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
             if remove_cosmic:
                 cosmicsigma = 5
                 while True:
-                    datclean = ccdproc.cosmicray_lacosmic(dat,sigclip=cosmicsigma,readnoise=RON)
+                    datclean = ccdproc.cosmicray_lacosmic(dat,sigclip=cosmicsigma,readnoise=RON,
+                    gain_apply=False)
                     if np.where(datclean[1])[0].shape[0] < 5000:
                         break
                     else:
