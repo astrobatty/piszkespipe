@@ -850,7 +850,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
         h = h[get_extension(obj)]
         mjd,mjd0 = piszkesutils.mjd_fromheader(h)
         hd = pyfits.getheader(obj,ext=get_extension(obj))
-        obname = piszkesutils.search_name(fsim,log=log)
+        obname = piszkesutils.search_name(obj,log=log)
         exptime = hd['EXPTIME']
 
         print("\t\tObject name:",obname)
