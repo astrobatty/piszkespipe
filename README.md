@@ -28,12 +28,7 @@ pkg-config --cflags --libs gsl && gsl-config --version
 
 ## Installation 1: in a normal python environment (for regular python users)
 
-``piszkespipe`` requires python 3.x, and ``numpy`` must be preinstalled:
-```bash
-pip install numpy
-```
-
-Then the package can be installed:
+``piszkespipe`` can be installed from source:
 ```bash
 pip install git+https://github.com/astrobatty/piszkespipe.git
 ```
@@ -42,7 +37,7 @@ pip install git+https://github.com/astrobatty/piszkespipe.git
 
 The easiest way to separate ``piszkespipe`` from other python packages (and everything else) is to install it in a [conda (see this link for minimal installiation)](https://docs.conda.io/en/latest/miniconda.html) environment:
 ```bash
-conda create -n piszkespipe python=3.7 numpy
+conda create -n piszkespipe python=3.7
 ```
 
 To activate the environment:
