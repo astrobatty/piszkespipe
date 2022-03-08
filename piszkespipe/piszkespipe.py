@@ -85,6 +85,10 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
 
     ########## I/O Path settings ##########
     dirin = os.path.join(dirin,'')
+    if not os.path.exists(dirin):
+        print(dirin + ' does not exists!')
+        exit()
+
     if dirout == 'default':
         dirout = dirin[:-1]+'_red/'
 
