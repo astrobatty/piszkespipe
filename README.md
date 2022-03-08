@@ -55,7 +55,7 @@ If the code is not used, the environment can be deactivated:
 conda deactivate
 ```
 
-## (No) Installation 3: running on Google Colab (for people who hates python)
+## (No) Installation 3: running on Google Colab (for people who hate python)
 
 ``piszkespipe`` can be used/tested without installing python on a local machine. You can use the Google Colab friendly tutorial, located [in the examples](https://github.com/astrobatty/piszkespipe/tree/main/examples/run_piszkespipe.ipynb).
 
