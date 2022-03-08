@@ -970,6 +970,8 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
                     plt.show()
 
                 dat = datclean[0]
+                if isinstance(dat, u.Quantity):
+                    dat = dat.value
 
             # Bias correction
             dat -= MasterBias
