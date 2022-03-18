@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 
-try:
-    import numpy
-except ModuleNotFoundError:
-    raise ModuleNotFoundError('Please install numpy -> pip install numpy')
-
 from setuptools import setup
 from os import path
 import sys
@@ -13,6 +8,9 @@ import sys
 #from Cython.Distutils import build_ext
 from numpy.distutils.core import Extension as Extension
 from numpy.distutils.core import setup as setup
+
+import numpy
+from Cython.Build import cythonize
 
 sys.path.insert(0, "piszkespipe")
 from version import __version__
@@ -42,10 +40,21 @@ extensions = Extension("piszkespipe.Marsh",
                          library_dirs=['/opt/local/lib'],
                          libraries=['m', 'gsl', 'gslcblas'])
 
+"""
 flib = Extension('piszkespipe.CCF',
               sources=['piszkespipe/CCF/CCF.f90','piszkespipe/CCF/CCF.pyf'],
               swig_opts=['-c', '--fcompiler=gnu95','--f77flags="-ffixed-line-length-none"'],
               define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')])
+"""
+
+flib = Extension("piszkespipe.CCF",
+             sources=["piszkespipe/CCF/CCF_pyc.pyx", "piszkespipe/CCF/CCF.c"],
+             include_dirs=[numpy.get_include(),'/opt/local/include'],
+             library_dirs=['/opt/local/lib'],
+             libraries=['m'],
+             define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')])
+
+ext_modules = [extensions,flib]
 
 desc='A pipeline for reducing echelle spectra obtained in Piszkesteto.'
 
@@ -63,5 +72,5 @@ setup(name='piszkespipe',
       include_package_data=True,
       install_requires=requirements,
       entry_points=entry_points,
-      ext_modules = [flib,extensions]
+      ext_modules = cythonize(ext_modules, compiler_directives={'language_level': 3})
      )
