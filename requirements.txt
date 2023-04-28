@@ -5,7 +5,7 @@ ephem
 skyfield
 astropy
 scipy
-ccdproc
+ccdproc<2.4
 statsmodels
 numba
 joblib
