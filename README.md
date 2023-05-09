@@ -30,7 +30,7 @@ pkg-config --cflags --libs gsl && gsl-config --version
 
 ``piszkespipe`` can be installed from source:
 ```bash
-pip install git+https://github.com/astrobatty/piszkespipe.git
+pip install piszkespipe
 ```
 
 ## Installation 2: in a separate conda environment (for people afraid of python)
@@ -47,7 +47,7 @@ conda activate piszkespipe
 
 Then the package can be installed:
 ```bash
-pip install git+https://github.com/astrobatty/piszkespipe.git
+pip install piszkespipe
 ```
 
 If the code is not used, the environment can be deactivated:
