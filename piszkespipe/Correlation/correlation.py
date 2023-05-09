@@ -91,6 +91,10 @@ def corr_p(model_name):
             Ll = L_Gl[o][I]
 
             I   = numpy.where( (mwa > Ll[0]) & (mwa< Ll[-1]) )[0]
+            if len(I) < 1:
+                o += 1
+                continue
+
             MML = mwa[I]
             MF  = FF[I]
             #ajustec = continuum.NORM_single(MML, MF, orden=2)
@@ -104,11 +108,13 @@ def corr_p(model_name):
             a    = scipy.integrate.simps(Fl[1:-1]*NFM[1:-1],Ll[1:-1])
             b    = scipy.integrate.simps(Fl[1:-1]*Fl[1:-1],Ll[1:-1])
             c    = scipy.integrate.simps(NFM[1:-1]*NFM[1:-1],Ll[1:-1])
+            """
             if c < 0:
                 plot(MML,MF)
                 plot(Ll,Fl)
                 plot(Ll,NFM)
                 show()
+            """
             CCF  = CCF+(a/math.sqrt(b*c))*(Ll[-2]-Ll[1])
             NOR = NOR+Ll[-2]-Ll[1]
 
@@ -136,6 +142,10 @@ def corr(L,F,mwa,FF,ons):
             Ll = L[o][I]
 
             I   = numpy.where( (mwa > Ll[0]) & (mwa< Ll[-1]) )[0]
+            if len(I) < 1:
+                o += 1
+                continue
+
             MML = mwa[I]
             MF  = FF[I]
             #ajustec = continuum.NORM_single(MML, MF, orden=2)
