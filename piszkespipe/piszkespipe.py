@@ -140,7 +140,7 @@ def piszkespipe(dirin,avoid_plot,dirout,DoClass,JustExtract,npools,object2do,
         print('Please download the models (2.85 GB), e.g. by')
         print('\tmkdir ~/COELHO_MODELS')
         print('\tcd ~/COELHO_MODELS')
-        print('\twget https://www.dropbox.com/s/0ktrptz4bc5bk66/coelho_05_red4_R40.tar.gz')
+        print('\twget https://cloud.konkoly.hu/s/taT2qiSjpBwWWDr/download/coelho_05_red4_R40.tar.gz')
         print('\ttar -xf coelho_05_red4_R40.tar.gz')
         print('And add the location of R_40000b dir to $COELHO path, e.g. by')
         print("\texport COELHO=~/COELHO_MODELS")
